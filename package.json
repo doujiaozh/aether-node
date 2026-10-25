@@ -1,0 +1,65 @@
+{
+  "name": "aether-node",
+  "version": "0.0.1",
+  "description": "Core engine for a decentralized, local-first AI operating system: CRDT sync, sandboxed execution, and a JSON-RPC agent protocol.",
+  "type": "module",
+  "license": "Apache-2.0",
+  "keywords": [
+    "local-first",
+    "crdt",
+    "decentralized",
+    "ai",
+    "agent",
+    "sandbox",
+    "json-rpc",
+    "p2p",
+    "operating-system"
+  ],
+  "homepage": "https://github.com/aether-node/aether-node",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aether-node/aether-node.git"
+  },
+  "bugs": {
+    "url": "https://github.com/aether-node/aether-node/issues"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.5",
+    "typescript": "^5.9.3"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./sync-engine": {
+      "types": "./dist/sync-engine/index.d.ts",
+      "import": "./dist/sync-engine/index.js"
+    },
+    "./micro-vm": {
+      "types": "./dist/micro-vm/index.d.ts",
+      "import": "./dist/micro-vm/index.js"
+    },
+    "./agent-protocol": {
+      "types": "./dist/agent-protocol/index.d.ts",
+      "import": "./dist/agent-protocol/index.js"
+    }
+  },
+  "scripts": {
+    "clean": "rm -rf dist *.tsbuildinfo",
+    "build": "tsc --build",
+    "start": "npm run build && node dist/index.js",
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "npm run build"
+  }
+}
