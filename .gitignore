@@ -1,0 +1,25 @@
+# dependencies
+node_modules/
+
+# build output
+dist/
+
+# tooling caches
+*.tsbuildinfo
+.vitest-cache/
+
+# editors / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# experiment scratch (pre-project validation)
+exp.mjs
+
+# local gh CLI binary (tooling, not source)
+gh.exe
+
+# logs
+*.log
+npm-debug.log*
