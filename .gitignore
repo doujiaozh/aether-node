@@ -23,3 +23,6 @@ gh.exe
 # logs
 *.log
 npm-debug.log*
+
+# local-first artifacts: SQLite state stores
+*.db

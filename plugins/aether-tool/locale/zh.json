@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "aether-node 管道工具",
+    "description": "把 JS 代码发送给运行中的 aether-node，在其沙箱微 VM（HTTP RPC vm.execute）中执行并回取值与日志。"
+  }
+}

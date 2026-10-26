@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>aether-node · 沙箱运行台</title>
+    <style>
+      :root {
+        color-scheme: light dark;
+        font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+      }
+      body {
+        max-width: 52rem;
+        margin: 2rem auto;
+        padding: 0 1rem;
+        line-height: 1.5;
+      }
+      h1 { font-size: 1.4rem; margin-bottom: 0.25rem; }
+      p.lede { margin-top: 0; color: GrayText; }
+      textarea {
+        width: 100%;
+        min-height: 10rem;
+        font-family: ui-monospace, "Cascadia Mono", Consolas, monospace;
+        font-size: 0.9rem;
+        padding: 0.75rem;
+        box-sizing: border-box;
+        border-radius: 0.4rem;
+      }
+      .actions { display: flex; gap: 0.75rem; align-items: center; margin: 0.75rem 0; }
+      button {
+        font: inherit;
+        padding: 0.45rem 1.1rem;
+        border-radius: 0.4rem;
+        cursor: pointer;
+      }
+      button.primary { font-weight: 600; }
+      .status { color: GrayText; font-size: 0.85rem; }
+      section { margin-top: 1rem; }
+      h2 { font-size: 1rem; margin-bottom: 0.4rem; }
+      pre {
+        background: CanvasText;
+        color: Canvas;
+        background: ButtonFace;
+        border: 1px solid GrayText;
+        padding: 0.75rem;
+        border-radius: 0.4rem;
+        overflow: auto;
+        white-space: pre-wrap;
+        font-size: 0.85rem;
+      }
+      pre.error { color: #c0392b; }
+      .kv { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+      .kv span {
+        font-size: 0.8rem;
+        border: 1px solid GrayText;
+        border-radius: 999px;
+        padding: 0.1rem 0.6rem;
+        color: GrayText;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>aether-node · 沙箱运行台</h1>
+    <p class="lede">
+      在下面输入任意 JavaScript，点击「运行」。代码会在 aether-node 的沙箱微 VM 中执行
+      （独立 worker 线程，限制内存与执行时长），结果与沙箱日志都会打印出来。
+      页面通过 fetch 调用同一端口上的 JSON-RPC 端点（POST /，方法 vm.execute），
+      与 P2P 同步的 WebSocket 传输共存于同一服务。
+    </p>
+
+    <div class="kv" id="node-meta"></div>
+
+    <section>
+      <label for="code"><b>JavaScript 代码</b></label>
+      <textarea id="code" spellcheck="false">// 沙箱里没有外部全局，只能用传入的 context 和闭包内的代码。
+const Fib = { at: (n) => (n < 2 ? n : Fib.at(n - 1) + Fib.at(n - 2)) };
+console.log("computing fib(12)…");
+return Fib.at(12);</textarea>
+      <div class="actions">
+        <button class="primary" id="run">运行</button>
+        <button id="state">查看节点状态</button>
+        <span class="status" id="status"></span>
+      </div>
+    </section>
+
+    <section>
+      <h2>结果</h2>
+      <pre id="result">（尚未运行）</pre>
+    </section>
+
+    <section>
+      <h2>沙箱日志</h2>
+      <pre id="logs">（空）</pre>
+    </section>
+
+    <script src="/app.js"></script>
+  </body>
+</html>

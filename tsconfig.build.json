@@ -6,6 +6,6 @@
     "declaration": true,
     "composite": false
   },
-  "include": ["src/**/*.ts", "demo.ts"],
+  "include": ["src/**/*.ts", "demo.ts", "ws-demo.ts", "web-demo.ts"],
   "exclude": ["node_modules", "dist", "tests", "**/*.test.ts", "vitest.config.ts", "exp.mjs"]
 }

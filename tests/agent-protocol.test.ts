@@ -8,8 +8,8 @@ import {
   HttpRpcTransport,
   registerSystemMethods,
 } from '../src/agent-protocol/index.js';
-import { MicroVm } from '../src/micro-vm/index.js';
-import { SyncEngine } from '../src/sync-engine/index.js';
+import { MicroVm, type VmResult } from '../src/micro-vm/index.js';
+import { SyncEngine, type SyncState, type MergeSummary } from '../src/sync-engine/index.js';
 
 function makeLoopbackClient(): { server: RpcServer; client: RpcClient } {
   const server = new RpcServer();
@@ -190,7 +190,7 @@ describe('agent-protocol — system methods (vm.execute + sync.getState)', () =>
 
   it('runs code through vm.execute over JSON-RPC', async () => {
     const client = makeNode();
-    const result = await client.call('vm.execute', {
+    const result = await client.call<VmResult>('vm.execute', {
       code: 'return ctx.n * 3;',
       context: { ctx: { n: 14 } },
     });
@@ -200,7 +200,7 @@ describe('agent-protocol — system methods (vm.execute + sync.getState)', () =>
 
   it('returns sandbox failures as error envelopes, not exceptions', async () => {
     const client = makeNode();
-    const result = await client.call('vm.execute', {
+    const result = await client.call<VmResult>('vm.execute', {
       code: 'while (true) {}',
       timeoutMs: 300,
     });
@@ -210,7 +210,7 @@ describe('agent-protocol — system methods (vm.execute + sync.getState)', () =>
 
   it('reads the current sync state via sync.getState', async () => {
     const client = makeNode();
-    const state = await client.call('sync.getState');
+    const state = await client.call<SyncState>('sync.getState');
     expect(state.format).toBe('aether-node/v1');
     expect(state.node).toBe('rpc-node');
     expect(state.registers).toEqual({});
@@ -228,14 +228,14 @@ describe('agent-protocol — system methods (vm.execute + sync.getState)', () =>
 
   it('writes agent data through sync.merge and reads it back', async () => {
     const client = makeNode();
-    const summary = await client.call('sync.merge', {
+    const summary = await client.call<MergeSummary>('sync.merge', {
       registers: { thought: 'hello world' },
       counters: { tokens: 128 },
     });
     expect(summary.applied).toBe(true);
     expect(summary.registersChanged).toBe(1);
     expect(summary.countersChanged).toBe(1);
-    const state = await client.call('sync.getState');
+    const state = await client.call<SyncState>('sync.getState');
     expect(state.registers.thought.value).toBe('hello world');
     expect(Object.keys(state.counters.tokens.p)).toEqual(['rpc-node']);
   });

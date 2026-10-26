@@ -1,7 +1,7 @@
 {
   "name": "aether-node",
-  "version": "0.1.0",
-  "description": "Core engine of a decentralized, local-first AI operating system: CRDT sync engine, sandboxed micro-VM, and a JSON-RPC agent protocol.",
+  "version": "0.2.0",
+  "description": "Core engine of a decentralized, local-first AI operating system: CRDT sync engine with SQLite persistence, sandboxed micro-VM, JSON-RPC agent protocol with WebSocket P2P sync, and a minimal Web UI.",
   "license": "Apache-2.0",
   "type": "module",
   "main": "dist/src/index.js",
@@ -17,6 +17,8 @@
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
     "test:watch": "node --experimental-vm-modules node_modules/jest/bin/jest.js --watch",
     "demo": "npm run build && node dist/demo.js",
+    "demo:p2p": "npm run build && node dist/ws-demo.js",
+    "demo:web": "npm run build && node dist/web-demo.js",
     "prepublishOnly": "npm run typecheck && npm test && npm run build"
   },
   "engines": {
@@ -26,6 +28,9 @@
     "local-first",
     "crdt",
     "sync",
+    "sqlite",
+    "websocket",
+    "p2p",
     "sandbox",
     "vm",
     "json-rpc",
@@ -80,8 +85,14 @@
     "@babel/preset-typescript": "^7.26.0",
     "@types/jest": "^29.5.14",
     "@types/node": "^22.10.2",
+    "@types/sql.js": "^1.4.11",
+    "@types/ws": "^8.18.2",
     "babel-jest": "^29.7.0",
     "jest": "^29.7.0",
     "typescript": "^5.7.2"
+  },
+  "dependencies": {
+    "sql.js": "^1.15.1",
+    "ws": "^8.22.0"
   }
 }

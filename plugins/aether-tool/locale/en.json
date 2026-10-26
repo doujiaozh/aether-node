@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "aether-node conduit",
+    "description": "Send JavaScript to a running aether-node and execute it inside its sandboxed micro-VM over HTTP RPC (vm.execute); get the value and sandbox logs back."
+  }
+}
